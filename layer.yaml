@@ -1,9 +1,7 @@
-includes: ['layer:basic', 'layer:apt', 'layer:flask', 'interface:http']
+includes: ['layer:basic', 'layer:nginx']
 repo: https://github.com/techalchemy/layer-flask.git
 options:
-  apt:
-    packages:
-      - git
-      - python3
-      - python3-venv
-      - python3-pip 
+  basic:
+    python_packages: ['Flask', 'gunicorn']
+    packages: ['nginx']
+    use_venv: false
