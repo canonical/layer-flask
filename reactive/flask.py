@@ -6,7 +6,7 @@ from charmhelpers.core.hookenv import (
     open_port,
     config,
 )
-from charmhelpers.contrib.python.packages import pip_install
+from charmhelpers.contrib import python
 from charms.reactive import when, when_not, set_state, remove_state
 from charms.layer.nginx import configure_site
 from charms.layer.flaskhelpers import restart_api, set_workers
@@ -20,8 +20,8 @@ def install():
         os.mkdir('/home/ubuntu/flask')
         shutil.chown('/home/ubuntu/flask', user='ubuntu', group='ubuntu')
         touch('/home/ubuntu/flask/flask-config')
-    for pkg in ['Flask', 'gunicorn', 'nginx']:
-        pip_install(pkg)
+    for pkg in ['Flask', 'gunicorn']:
+        python.packages.pip_install(pkg)
     set_state('flask.installed')
     if config["nginx"]:
         set_state('nginx.install')

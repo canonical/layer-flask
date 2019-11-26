@@ -5,7 +5,12 @@ options:
     python_packages:
       - Flask
       - gunicorn
-      - '-e git+https://github.com/techalchemy/py-macaroon-bakery.git@bugfix/78#egg=macaroonbakery'
-      - '-e git+https://github.com/techalchemy/charm-helpers.git@bugfix/pip-install#egg=charmhelpers'
+      - pymacaroons
+      - PyNaCl<2.0,>=1.1.2
+      - protobuf<4.0,>=3.0.0
+      - pyRFC3339<2.0,>=1.0
+      - requests<3.0,>=2.18.1
+      - 'git+https://github.com/techalchemy/py-macaroon-bakery.git@bugfix/78#egg=macaroonbakery'
+      - 'git+https://github.com/techalchemy/charm-helpers.git@bugfix/pip-install#egg=charmhelpers'
     packages: ['nginx']
     use_venv: false
