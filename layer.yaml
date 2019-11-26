@@ -2,6 +2,10 @@ includes: ['layer:basic', 'layer:nginx']
 repo: https://github.com/techalchemy/layer-flask.git
 options:
   basic:
-    python_packages: ['Flask', 'gunicorn']
+    python_packages:
+      - Flask
+      - gunicorn
+      - '-e git+https://github.com/techalchemy/py-macaroon-bakery.git@bugfix/78#egg=macaroonbakery'
+      - '-e git+https://github.com/techalchemy/charm-helpers.git@bugfix/pip-install#egg=charmhelpers'
     packages: ['nginx']
     use_venv: false

@@ -1,2 +1,0 @@
-git+https://github.com/techalchemy/py-macaroon-bakery.git@bugfix/78#egg=macaroonbakery
-git+https://github.com/techalchemy/charm-helpers.git@bugfix/pip-install#egg=charmhelpers
