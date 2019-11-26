@@ -1,5 +1,4 @@
 import os
-import requests
 import shutil
 from charmhelpers.core import hookenv
 from charmhelpers.core.hookenv import (
