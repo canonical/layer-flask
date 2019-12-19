@@ -25,7 +25,7 @@ def install():
     set_state('flask.installed')
     if config["nginx"]:
         set_state('nginx.install')
-    else:    
+    else:
         set_state('nginx.stop')
 
 @when('nginx.stop', 'nginx.available')
