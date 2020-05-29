@@ -10,7 +10,6 @@ options:
       - protobuf<4.0,>=3.0.0
       - pyRFC3339<2.0,>=1.0
       - requests<3.0,>=2.18.1
-      - 'git+https://github.com/go-macaroon-bakery/py-macaroon-bakery.git#egg=macaroonbakery'
-      - 'git+https://github.com/techalchemy/charm-helpers.git@bugfix/pip-install#egg=charmhelpers'
+      - macaroonbakery
+      - charmhelpers
     packages: ['nginx']
-    use_venv: false

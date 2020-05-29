@@ -20,8 +20,6 @@ def install():
         os.mkdir('/home/ubuntu/flask')
         shutil.chown('/home/ubuntu/flask', user='ubuntu', group='ubuntu')
         touch('/home/ubuntu/flask/flask-config')
-    for pkg in ['Flask', 'gunicorn']:
-        python.packages.pip_install(pkg)
     set_state('flask.installed')
     if config["nginx"]:
         set_state('nginx.install')
