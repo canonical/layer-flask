@@ -32,7 +32,7 @@ def start_api(path, app, port, template='unitfile', context=None):
 def restart_api(port):
     path, app, template = get_app_info()
     if path != "" and app != "" and template != "":
-        start(path, app, port, template)
+        start(path, app, port, template, {})
 
 def start(path, app, port, template, context):
     if config["nginx"]:
