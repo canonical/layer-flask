@@ -1,4 +1,4 @@
-name: CD ${{ GITHUB_REPOSITORY }}
+name: Build and Publish
 
 on:
   release:
