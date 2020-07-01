@@ -1,0 +1,38 @@
+name: CI ${{ GITHUB_REPOSITORY }}
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: CI Lint python ${{ matrix.python-version }} @ ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6]
+        os: [ubuntu-18.04]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade --upgrade-strategy=eager pip setuptools wheel pyyaml
+
+      - name: Install Charm Deps
+        run: |
+          pip install --upgrade $(python -c 'import yaml;\
+          contents = yaml.load(open("layer.yaml", "r"), Loader=yaml.SafeLoader);\
+          print(" ".join(contents.get("options", {}).get("basic", {}).get("python_packages", [])))')
+
+      - name: Install pre-commit and linting deps
+        run: pip install --upgrade pre-commit black flake8 flake8-bugbear
+
+      - name: Run linting
+        env:
+          PYTHONPATH: .
+        run: |
+          pre-commit install
+          pre-commit run --all-files --show-diff-on-failure

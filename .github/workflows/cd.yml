@@ -1,0 +1,61 @@
+name: CD ${{ GITHUB_REPOSITORY }}
+
+on:
+  release:
+    types: [published]
+  push:
+    branches: [ master, actions ]
+
+env:
+  LP_USER_NAME: stg-esm-python-pypi
+  CHARM_DIR: /tmp/charms
+  CHARM_LAYERS_DIR: /tmp/charm/layers
+  CHARM_BUILD_DIR: /tmp/charm/builds
+  
+jobs:
+  build:
+    name: Build charm @ ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: [3.6]
+        os: [ubuntu-18.04]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set MY_CHARM_NAME environment variable
+        run: echo '::set-env name=MY_CHARM_NAME::${GITHUB_REPOSITORY#canonical/layer-}'
+
+      - name: Install dependencies
+        run: sudo apt-get install snapd
+
+      - name: Install snap dependencies
+        run: sudo snap install charm --classic
+
+      - name: Create Directory for Built Charms
+        run: mkdir -p ${CHARM_BUILD_DIR}
+
+      - name: Install SSH Key
+        run: |
+          OLD_UMASK=$(umask)
+          umask 0077
+          mkdir ~/.ssh
+          cat > ~/.ssh/known_hosts <<< "${{ secrets.GIT_LAUNCHPAD_NET_KNOWN_HOSTS }}"
+          cat > ~/.ssh/id_rsa <<< "${{ secrets.STG_ESM_PYTHON_PYPI_WENDIGO_SSH_RSA }}" ${{ GITHUB_REPOSITORY }}
+          umask $OLD_UMASK
+      
+      - name: Clone built charm from LP
+        run: git clone git+ssh://${LP_USER_NAME}@git.launchpad.net/~canonical-security-charmers/canonical-security-${MY_CHARM_NAME}-charm ${CHARM_BUILD_DIR}/${MY_CHARM_NAME}
+
+      - name: Build Charm
+        run: charm build .
+
+      - name: Publish built charm to LP
+        run: |
+          cd ${CHARM_BUILD_DIR}/${MY_CHARM_NAME}
+          git config --global user.email "$LP_USER_NAME@canonical.com"
+          git config --global user.Name "$LP_USER_NAME"
+          git add .
+          git commit -m "rebuild $MY_CHARM_NAME charm for $GITHUB_SHA $GITHUB_REF"
+          git push
+
