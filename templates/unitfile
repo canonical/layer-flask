@@ -6,7 +6,7 @@ After=nginx.service
 Type=idle
 User=ubuntu
 Group=ubuntu
-ExecStart=/usr/local/bin/gunicorn --bind 0.0.0.0:{{port}} --pythonpath {{pythonpath}} wsgi:{{app}} -w {{workers}} -p /home/ubuntu/flask/master.pid
+ExecStart={{gunicornpath}} --bind 0.0.0.0:{{port}} --pythonpath {{pythonpath}} wsgi:{{app}} -w {{workers}} -p /home/ubuntu/flask/master.pid
 
 [Install]
 WantedBy=multi-user.target

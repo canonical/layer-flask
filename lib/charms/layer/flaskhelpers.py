@@ -64,6 +64,8 @@ def start_api_gunicorn(path, app, port, workers, template, context):
     unitfile_context['pythonpath'] = info[0]
     unitfile_context['app'] = app 
     unitfile_context['workers'] = str(workers) 
+    unitfile_context['gunicornpath'] = os.path.join(os.path.dirname(os.getcwd()), ".venv/bin/gunicorn")
+
     render(source=template,
            target='/etc/systemd/system/flask.service',
            context=unitfile_context)

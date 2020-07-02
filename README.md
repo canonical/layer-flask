@@ -56,7 +56,7 @@ The Flask api is run via systemd. To customize the generated unitfile, create a 
 ```
 'env1' = 'Environment="VAR=example"'
 ```
-Then call the start_api with the customized untifile template:
+Then call the start_api with the customized unitfile template:
 ```
 start_api(project_path + "/server.py", "app", config["flask-port"], 'my.unitfile')
 ```
