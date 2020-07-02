@@ -72,18 +72,15 @@ def start_api_gunicorn(path, app, port, workers, template, context):
     )
     unitfile_dict = load_unitfile()
     unitfile_context = {**unitfile_dict, **context}
-    unitfile_context["port"] = str(port)
-    unitfile_context["pythonpath"] = info[0]
-    unitfile_context["app"] = app
-    unitfile_context["workers"] = str(workers)
-    render(
-        source=template,
-        target="/etc/systemd/system/flask.service",
-        context=unitfile_context,
-    )
+    unitfile_context['port'] = str(port)
+    unitfile_context['pythonpath'] = info[0]
+    unitfile_context['app'] = app 
+    unitfile_context['workers'] = str(workers) 
+    unitfile_context['gunicornpath'] = os.path.join(os.path.dirname(os.getcwd()), ".venv/bin/gunicorn")
 
-    call(["systemctl", "enable", "flask"])
-    host.service_start("flask")
+    render(source=template,
+           target='/etc/systemd/system/flask.service',
+           context=unitfile_context)
 
 
 def is_flask_running():
