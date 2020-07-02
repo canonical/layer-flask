@@ -4,7 +4,8 @@ repos:
     rev: 19.10b0
     hooks:
       - id: black
-        args: [--target-version, py36]
+        args: [--target-version, py36, --line-length, "88"]
+        exclude: templates/
 
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.1  # pick a git hash / tag to point to
